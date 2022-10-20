@@ -1,6 +1,6 @@
+import { cx } from 'class-variance-authority';
 import { Form, Link, To } from 'react-router-dom';
 
-import { cx } from '../utils';
 import { VStack } from './Stack';
 
 export type ActionListProps = {
@@ -47,10 +47,11 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
 }) => {
   return (
     <li
-      className={cx('p-2 rounded hover:bg-gray-50 flex gap-2 items-center', {
-        'bg-white': background === 'regular', // item.status === 'uncompleted',
-        'bg-gray-100 text-gray-500': background === 'dimmed', // item.status === 'completed',
-      })}
+      className={cx(
+        'p-2 rounded hover:bg-gray-50 flex gap-2 items-center',
+        background === 'regular' ? 'bg-white' : '',
+        background === 'dimmed' ? 'bg-gray-100 text-gray-500' : '',
+      )}
     >
       <Form method="post" className="contents" action={action}>
         <input type="hidden" name="id" value={id} />
@@ -77,10 +78,10 @@ const ActionButton: React.FC<Action> = ({ action, label, icon, kind }) => {
       name="action"
       value={action}
       aria-label={label}
-      className={cx({
-        'hover:text-green-500': kind === 'success',
-        'hover:text-red-500': kind === 'destructive',
-      })}
+      className={cx(
+        kind === 'success' ? 'hover:text-green-500' : '',
+        kind === 'destructive' ? 'hover:text-red-500' : '',
+      )}
     >
       {icon}
     </button>

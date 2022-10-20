@@ -14,9 +14,7 @@
         "index": "apps/tdsl/src/index.html",
         "baseHref": "/",
         "main": "apps/tdsl/src/main.tsx",
-        "polyfills": "apps/tdsl/src/polyfills.ts",
         "tsConfig": "apps/tdsl/tsconfig.app.json",
-        "assets": ["apps/tdsl/src/favicon.ico", "apps/tdsl/src/assets"],
         "styles": ["apps/tdsl/src/styles.css"],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack",
@@ -30,12 +28,6 @@
           "vendorChunk": true
         },
         "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/tdsl/src/environments/environment.ts",
-              "with": "apps/tdsl/src/environments/environment.prod.ts"
-            }
-          ],
           "optimization": true,
           "outputHashing": "all",
           "sourceMap": false,

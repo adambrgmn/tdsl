@@ -1,8 +1,8 @@
+import { cx } from 'class-variance-authority';
 import { ClipboardList, ListChecks } from 'lucide-react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 
 import { Page, PageSection, VStack } from '../ui';
-import { cx } from '../utils';
 
 export const Root: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ export const Root: React.FC = () => {
                 <NavLink
                   to="/todo"
                   className={({ isActive }) =>
-                    cx('flex gap-1 items-center hover:text-blue-500', isActive && 'text-blue-500')
+                    cx('flex gap-1 items-center hover:text-blue-500', isActive ? 'text-blue-500' : '')
                   }
                 >
                   <ListChecks size={16} /> To-dos
@@ -29,7 +29,7 @@ export const Root: React.FC = () => {
                 <NavLink
                   to="/shopping"
                   className={({ isActive }) =>
-                    cx('flex gap-1 items-center hover:text-blue-500', isActive && 'text-blue-500')
+                    cx('flex gap-1 items-center hover:text-blue-500', isActive ? 'text-blue-500' : '')
                   }
                 >
                   <ClipboardList size={16} />
