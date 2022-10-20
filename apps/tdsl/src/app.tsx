@@ -1,12 +1,18 @@
+import { lazy } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorPage } from './error-page';
 import { Root } from './routes/root';
-import { ShoppingList, action as shoppingListAction, loader as shoppingListLoader } from './routes/shopping/id';
-import { ShoppingLists, action as shoppingListsAction, loader as shoppingListsLoader } from './routes/shopping/list';
+import { action as shoppingListAction, loader as shoppingListLoader } from './routes/shopping/id';
+import { action as shoppingListsAction, loader as shoppingListsLoader } from './routes/shopping/list';
 import { Start } from './routes/start';
-import { TodoSingle, loader as todoSingleLoader } from './routes/todo/id';
-import { TodoList, action as todoListAction, loader as todoListLoader } from './routes/todo/list';
+import { loader as todoSingleLoader } from './routes/todo/id';
+import { action as todoListAction, loader as todoListLoader } from './routes/todo/list';
+
+const ShoppingList = lazy(() => import('./routes/shopping/id'));
+const ShoppingLists = lazy(() => import('./routes/shopping/list'));
+const TodoSingle = lazy(() => import('./routes/todo/id'));
+const TodoList = lazy(() => import('./routes/todo/list'));
 
 const router = createBrowserRouter([
   {

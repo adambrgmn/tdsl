@@ -1,11 +1,11 @@
 import { XCircle } from 'lucide-react';
 import { Fragment } from 'react';
-import { ActionFunctionArgs, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { shoppingLists } from '../../data/shopping-lists';
 import { ShoppingListSchema } from '../../types';
-import { ActionList, ActionListItem, CreateInput, PageSection, VStack } from '../../ui';
+import { ActionList, ActionListItem, CreateInput, PageSection, SuspendedOutlet, VStack } from '../../ui';
 
 export const ShoppingLists: React.FC = () => {
   let data = useLoaderData();
@@ -41,10 +41,12 @@ export const ShoppingLists: React.FC = () => {
         </VStack>
       </PageSection>
 
-      <Outlet />
+      <SuspendedOutlet />
     </Fragment>
   );
 };
+
+export default ShoppingLists;
 
 export async function loader() {
   let items = await shoppingLists.list();

@@ -11,6 +11,7 @@ const pageSection = cva(['p-4', 'rounded-md', 'flex', 'flex-col'], {
       secondary: ['bg-gray-200'],
       item: ['bg-gray-300'],
       danger: ['bg-red-200'],
+      neutral: ['bg-white'],
     },
   },
 });

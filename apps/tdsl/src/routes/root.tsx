@@ -1,8 +1,8 @@
 import { cx } from 'class-variance-authority';
 import { ClipboardList, ListChecks } from 'lucide-react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
-import { Page, PageSection, VStack } from '../ui';
+import { Page, PageSection, SuspendedOutlet, VStack } from '../ui';
 
 export const Root: React.FC = () => {
   return (
@@ -41,7 +41,7 @@ export const Root: React.FC = () => {
         </VStack>
       </PageSection>
 
-      <Outlet />
+      <SuspendedOutlet />
     </Page>
   );
 };

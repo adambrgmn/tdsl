@@ -32,6 +32,8 @@ export const TodoSingle: React.FC = () => {
   );
 };
 
+export default TodoSingle;
+
 const ParamsSchema = z.object({
   id: z.string(),
 });

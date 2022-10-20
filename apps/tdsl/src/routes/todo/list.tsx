@@ -1,11 +1,20 @@
 import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { Fragment } from 'react';
-import { ActionFunctionArgs, Link, LoaderFunctionArgs, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { todos } from '../../data/todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
-import { ActionList, ActionListItem, CreateInput, HStack, PageSection, Spacer, VStack } from '../../ui';
+import {
+  ActionList,
+  ActionListItem,
+  CreateInput,
+  HStack,
+  PageSection,
+  Spacer,
+  SuspendedOutlet,
+  VStack,
+} from '../../ui';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();
@@ -83,10 +92,12 @@ export const TodoList: React.FC = () => {
         </VStack>
       </PageSection>
 
-      <Outlet />
+      <SuspendedOutlet />
     </Fragment>
   );
 };
+
+export default TodoList;
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);

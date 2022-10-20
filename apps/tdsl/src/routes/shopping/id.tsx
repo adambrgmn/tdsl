@@ -59,6 +59,8 @@ export const ShoppingList: React.FC = () => {
   );
 };
 
+export default ShoppingList;
+
 const ParamsSchema = z.object({ id: z.string() });
 
 export async function loader({ params }: LoaderFunctionArgs) {

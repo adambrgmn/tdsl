@@ -5,3 +5,4 @@ export * from './ItemHeader';
 export * from './Page';
 export * from './Spacer';
 export * from './Stack';
+export * from './SuspendedOutlet';
