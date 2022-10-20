@@ -1,6 +1,6 @@
 import { VariantProps, cva, cx } from 'class-variance-authority';
 
-import { base } from './base';
+import { base } from './Box';
 
 const stack = cva(['flex'], {
   variants: {
@@ -20,15 +20,16 @@ const stack = cva(['flex'], {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StackElement = keyof JSX.IntrinsicElements | React.JSXElementConstructor<any>;
 
-export type StackProps<Element extends StackElement> = VariantProps<typeof stack> & {
-  element?: keyof JSX.IntrinsicElements;
-  children?: React.ReactNode;
-} & Omit<React.ComponentProps<Element>, 'children'>;
+export type StackProps<Element extends StackElement> = Omit<React.ComponentProps<Element>, 'children'> &
+  VariantProps<typeof stack> & {
+    element?: keyof JSX.IntrinsicElements;
+    children?: React.ReactNode;
+  };
 
 export function VStack<Element extends StackElement = 'div'>({
-  children,
   element,
   className,
+  children,
   ...props
 }: StackProps<Element>) {
   let Element = element ?? 'div';
@@ -36,9 +37,9 @@ export function VStack<Element extends StackElement = 'div'>({
 }
 
 export function HStack<Element extends StackElement = 'div'>({
-  children,
   element,
   className,
+  children,
   ...props
 }: StackProps<Element>) {
   let Element = element ?? 'div';

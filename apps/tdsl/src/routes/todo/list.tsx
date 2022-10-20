@@ -1,29 +1,15 @@
-import { CheckCircle, Circle, ListPlus, XCircle } from 'lucide-react';
+import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { Fragment } from 'react';
-import {
-  ActionFunctionArgs,
-  Form,
-  Link,
-  LoaderFunctionArgs,
-  Outlet,
-  json,
-  redirect,
-  useActionData,
-  useLoaderData,
-} from 'react-router-dom';
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { todos } from '../../data/todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
-import { HStack, PageSection, VStack } from '../../ui';
-import { cx } from '../../utils';
+import { ActionList, ActionListItem, CreateInput, HStack, PageSection, VStack } from '../../ui';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();
   let items = TodoItemSchema.array().parse(data);
-
-  let actionData = useActionData();
-  let contentError = getErrorMessage('content', actionData);
 
   let completed: Array<TodoItem> = [];
   let uncompleted: Array<TodoItem> = [];
@@ -35,57 +21,42 @@ export const TodoList: React.FC = () => {
     }
   }
 
+  let todos = completed.concat(uncompleted);
+
   return (
     <Fragment>
       <PageSection element="div" level="secondary">
         <VStack gap="8" flex="fill">
-          <Form method="post">
-            <HStack padding="2" background="white" items="stretch" rounded="normal">
-              <VStack element="label" flex="fill">
-                <VStack gap="4" text="xs" tracking="wider">
-                  <span className="text-gray-700">New todo</span>
-                  {contentError != null ? (
-                    <span role="alert" className="text-red-500">
-                      {contentError.message}
-                    </span>
-                  ) : null}
-                </VStack>
+          <CreateInput
+            label="New to-do"
+            name="content"
+            placeholder="What needs to be done?"
+            submitLabel="Create new to-do item"
+          />
 
-                <input
-                  key={items.length}
-                  type="text"
-                  name="content"
-                  placeholder="What needs to be done?"
-                  autoFocus
-                  className="placeholder:text-gray-400"
-                  aria-invalid={contentError != null}
-                  aria-required
-                />
-              </VStack>
-
-              <button
-                type="submit"
-                name="action"
-                value="create"
-                aria-label="Create new to-do item"
-                className="hover:text-blue-500"
-              >
-                <ListPlus />
-              </button>
-            </HStack>
-          </Form>
-
-          <VStack gap="1" flex="fill">
-            <h2 className="text-xs tracking-wider">To-do</h2>
-            <VStack element="ul" gap="2" items="stretch">
-              {uncompleted.map((item) => (
-                <Todo key={item.id} item={item} />
-              ))}
-              {completed.map((item) => (
-                <Todo key={item.id} item={item} />
-              ))}
-            </VStack>
-          </VStack>
+          <ActionList title="To-do">
+            {todos.map((item) => (
+              <ActionListItem
+                key={item.id}
+                id={item.id}
+                title={item.content}
+                to={`./${item.id}`}
+                background={item.status === 'uncompleted' ? 'regular' : 'dimmed'}
+                left={{
+                  action: 'toggle',
+                  label: `Mark item as ${item.status === 'uncompleted' ? '' : 'not '}completed`,
+                  icon: item.status === 'uncompleted' ? <Circle size={16} /> : <CheckCircle size={16} />,
+                  kind: item.status === 'uncompleted' ? 'success' : undefined,
+                }}
+                right={{
+                  action: 'delete',
+                  label: 'Remove item',
+                  icon: <XCircle size={16} />,
+                  kind: 'destructive',
+                }}
+              />
+            ))}
+          </ActionList>
 
           <VStack background="white" padding="2" rounded="normal">
             <p className="text-xs tracking-wider">Filters</p>
@@ -112,39 +83,6 @@ export const TodoList: React.FC = () => {
 
       <Outlet />
     </Fragment>
-  );
-};
-
-const Todo: React.FC<{ item: TodoItem }> = ({ item }) => {
-  return (
-    <li
-      key={item.id}
-      className={cx('p-2 rounded hover:bg-gray-50 flex gap-2 items-center', {
-        'bg-white': item.status === 'uncompleted',
-        'bg-gray-100 text-gray-500': item.status === 'completed',
-      })}
-    >
-      <Form method="post" className="contents">
-        <input type="hidden" name="id" value={item.id} />
-        <button
-          type="submit"
-          name="action"
-          value="toggle"
-          aria-label={`Mark as ${item.status === 'completed' ? 'not completed' : 'completed'}`}
-          className={cx({
-            'hover:text-green-500': item.status === 'uncompleted',
-          })}
-        >
-          {item.status === 'completed' ? <CheckCircle size={16} /> : <Circle size={16} />}
-        </button>
-        <Link to={`./${item.id}`} className="flex-1">
-          {item.content}
-        </Link>
-        <button type="submit" name="action" value="delete" aria-label="Remove item" className="hover:text-red-500">
-          <XCircle size={16} />
-        </button>
-      </Form>
-    </li>
   );
 };
 
@@ -190,13 +128,4 @@ export async function action({ request }: ActionFunctionArgs) {
       return redirect('/todo');
     }
   }
-}
-
-function getErrorMessage(name: string, error: unknown) {
-  if (!isValidationError(error)) return null;
-  return error.issues.find((err) => err.path[0] === name) ?? null;
-}
-
-function isValidationError(error: unknown): error is z.ZodError {
-  return error != null && 'issues' in error;
 }
