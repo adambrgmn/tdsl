@@ -12,19 +12,24 @@ import {
 import * as z from 'zod';
 
 import { todos } from '../../data/todos';
-import { TodoItemSchema, TodoStatusSchema } from '../../types';
+import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();
-  let items = TodoItemSchema.array()
-    .parse(data)
-    .sort((a, b) => {
-      if (a.status !== b.status) return b.status === 'completed' ? -1 : 1;
-      return a.updatedAt > b.updatedAt ? -1 : 1;
-    });
+  let items = TodoItemSchema.array().parse(data);
 
   let actionData = useActionData();
   let contentError = getErrorMessage('content', actionData);
+
+  let completed: Array<TodoItem> = [];
+  let uncompleted: Array<TodoItem> = [];
+  for (let item of items) {
+    if (item.status === 'completed') {
+      completed.push(item);
+    } else {
+      uncompleted.push(item);
+    }
+  }
 
   return (
     <div>
@@ -65,8 +70,27 @@ export const TodoList: React.FC = () => {
           </button>
         </Form>
 
+        <h2>To do</h2>
         <ul>
-          {items.map((item) => (
+          {uncompleted.map((item) => (
+            <li key={item.id}>
+              <Form method="post">
+                <input type="hidden" name="id" value={item.id} />
+                <button type="submit" name="action" value="toggle">
+                  Mark as {item.status === 'completed' ? 'not completed' : 'completed'}
+                </button>
+                <Link to={`./${item.id}`}>{item.content}</Link>
+                <button type="submit" name="action" value="delete">
+                  Remove item
+                </button>
+              </Form>
+            </li>
+          ))}
+        </ul>
+
+        <h2>Done</h2>
+        <ul>
+          {completed.map((item) => (
             <li key={item.id}>
               <Form method="post">
                 <input type="hidden" name="id" value={item.id} />
@@ -92,7 +116,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let url = new URL(request.url);
   let status = TodoStatusSchema.safeParse(url.searchParams.get('status'));
   let items = await todos.list(status.success ? status.data : undefined);
-  return json(items);
+  return json(items.sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1)));
 }
 
 const ActionInputSchema = z.discriminatedUnion('action', [
