@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { disableFetchMocks, enableFetchMocks } from 'jest-fetch-mock';
 import { XCircle } from 'lucide-react';
@@ -70,11 +70,5 @@ it('can render each row as a form with submit', async () => {
 
   let [last] = action.mock.lastCall;
   let text = await last.request.text();
-
-  /**
-   * This is not entirely correct. It should also include action=delete. But I'm suspecting that the
-   * Request mocks is not working as intended. Or jest-dom does not include button values when they
-   * serialize form data.
-   */
-  expect(text).toMatchInlineSnapshot(`"id=1"`);
+  expect(text).toMatchInlineSnapshot(`"action=delete&id=1"`);
 });

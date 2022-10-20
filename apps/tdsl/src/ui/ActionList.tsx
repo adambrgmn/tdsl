@@ -54,53 +54,43 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
         background === 'dimmed' ? 'bg-gray-100 text-gray-500' : '',
       )}
     >
-      <OptionalForm enabled={left != null || right != null} id={id} action={action}>
-        {left != null ? <ActionButton {...left} /> : null}
+      {left != null ? <ActionButton {...left} id={id} formAction={action} /> : null}
 
-        {to != null ? (
-          <Link to={to} className="flex-1">
-            {title}
-          </Link>
-        ) : (
-          <span className="flex-1">{title}</span>
-        )}
+      {to != null ? (
+        <Link to={to} className="flex-1">
+          {title}
+        </Link>
+      ) : (
+        <span className="flex-1">{title}</span>
+      )}
 
-        {right != null ? <ActionButton {...right} /> : null}
-      </OptionalForm>
+      {right != null ? <ActionButton {...right} id={id} formAction={action} /> : null}
     </li>
   );
 };
 
-const OptionalForm: React.FC<{ enabled: boolean; action?: string; id: string; children: React.ReactNode }> = ({
-  enabled,
-  action,
+const ActionButton: React.FC<Action & { id: string; formAction?: string }> = ({
   id,
-  children,
+  action,
+  formAction,
+  label,
+  icon,
+  kind,
 }) => {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  if (!enabled) return <Fragment>{children}</Fragment>;
-
   return (
-    <Form method="post" className="contents" action={action}>
+    <Form method="post" className="contents" action={formAction}>
+      <input type="hidden" name="action" value={action} />
       <input type="hidden" name="id" value={id} />
-      {children}
+      <button
+        type="submit"
+        aria-label={label}
+        className={cx(
+          kind === 'success' ? 'hover:text-green-500' : '',
+          kind === 'destructive' ? 'hover:text-red-500' : '',
+        )}
+      >
+        {icon}
+      </button>
     </Form>
-  );
-};
-
-const ActionButton: React.FC<Action> = ({ action, label, icon, kind }) => {
-  return (
-    <button
-      type="submit"
-      name="action"
-      value={action}
-      aria-label={label}
-      className={cx(
-        kind === 'success' ? 'hover:text-green-500' : '',
-        kind === 'destructive' ? 'hover:text-red-500' : '',
-      )}
-    >
-      {icon}
-    </button>
   );
 };

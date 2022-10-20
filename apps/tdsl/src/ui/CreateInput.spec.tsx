@@ -32,5 +32,5 @@ it('renders a Form wrapped input element', async () => {
 
   let [last] = action.mock.lastCall;
   let text = await last.request.text();
-  expect(text).toMatchInlineSnapshot(`"content=Buy+groceries"`);
+  expect(text).toMatchInlineSnapshot(`"action=create&content=Buy+groceries"`);
 });
