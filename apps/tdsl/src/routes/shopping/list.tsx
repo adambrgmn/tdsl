@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { ActionFunctionArgs, Form, Link, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
@@ -9,7 +10,7 @@ export const ShoppingLists: React.FC = () => {
   let items = ShoppingListSchema.array().parse(data);
 
   return (
-    <div>
+    <Fragment>
       <div>
         <ul>
           {items.map((item) => (
@@ -40,7 +41,7 @@ export const ShoppingLists: React.FC = () => {
       </div>
 
       <Outlet />
-    </div>
+    </Fragment>
   );
 };
 

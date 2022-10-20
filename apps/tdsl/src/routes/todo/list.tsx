@@ -1,3 +1,5 @@
+import { CheckCircle, Circle, ListPlus, XCircle } from 'lucide-react';
+import { Fragment } from 'react';
 import {
   ActionFunctionArgs,
   Form,
@@ -13,6 +15,7 @@ import * as z from 'zod';
 
 import { todos } from '../../data/todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
+import { cx } from '../../utils';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();
@@ -32,83 +35,112 @@ export const TodoList: React.FC = () => {
   }
 
   return (
-    <div>
-      <div>
-        <div>
-          <p>Filters:</p>
-          <ul>
-            <li>
-              <Link to={{ search: '' }}>Show all</Link>
-            </li>
-            <li>
-              <Link to={{ search: '?status=uncompleted' }}>Show uncompleted</Link>
-            </li>
-            <li>
-              <Link to={{ search: '?status=completed' }}>Show completed</Link>
-            </li>
-          </ul>
-        </div>
-
+    <Fragment>
+      <div className="p-4 flex flex-col gap-8 bg-gray-200 rounded-md">
         <Form method="post">
-          <div>
-            <label>
-              <span>New todo</span>
+          <div className="flex bg-white items-stretch p-2 rounded">
+            <label className="flex flex-col flex-1">
+              <div className="text-xs tracking-wider flex gap-4">
+                <span className="text-gray-700">New todo</span>
+                {contentError != null ? (
+                  <span role="alert" className="text-red-500">
+                    {contentError.message}
+                  </span>
+                ) : null}
+              </div>
               <input
+                key={items.length}
                 type="text"
                 name="content"
-                id="content"
                 placeholder="What needs to be done?"
+                autoFocus
+                className="placeholder:text-gray-400"
                 aria-invalid={contentError != null}
                 aria-required
               />
-              {contentError != null ? <p role="alert">{contentError.message}</p> : null}
             </label>
-          </div>
 
-          <button type="submit" name="action" value="create">
-            Create
-          </button>
+            <button
+              type="submit"
+              name="action"
+              value="create"
+              aria-label="Create new to-do item"
+              className="hover:text-blue-500"
+            >
+              <ListPlus />
+            </button>
+          </div>
         </Form>
 
-        <h2>To do</h2>
-        <ul>
-          {uncompleted.map((item) => (
-            <li key={item.id}>
-              <Form method="post">
-                <input type="hidden" name="id" value={item.id} />
-                <button type="submit" name="action" value="toggle">
-                  Mark as {item.status === 'completed' ? 'not completed' : 'completed'}
-                </button>
-                <Link to={`./${item.id}`}>{item.content}</Link>
-                <button type="submit" name="action" value="delete">
-                  Remove item
-                </button>
-              </Form>
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-1 flex-1">
+          <h2 className="text-xs tracking-wider">To-do</h2>
+          <ul className="flex flex-col gap-2 items-stretch">
+            {uncompleted.map((item) => (
+              <Todo key={item.id} item={item} />
+            ))}
+            {completed.map((item) => (
+              <Todo key={item.id} item={item} />
+            ))}
+          </ul>
+        </div>
 
-        <h2>Done</h2>
-        <ul>
-          {completed.map((item) => (
-            <li key={item.id}>
-              <Form method="post">
-                <input type="hidden" name="id" value={item.id} />
-                <button type="submit" name="action" value="toggle">
-                  Mark as {item.status === 'completed' ? 'not completed' : 'completed'}
-                </button>
-                <Link to={`./${item.id}`}>{item.content}</Link>
-                <button type="submit" name="action" value="delete">
-                  Remove item
-                </button>
-              </Form>
+        <div className="p-2 bg-white rounded">
+          <p className="text-xs tracking-wider">Filters</p>
+          <ul className="flex gap-4 text-sm">
+            <li>
+              <Link to={{ search: '' }} className="hover:text-blue-500">
+                Show all
+              </Link>
             </li>
-          ))}
-        </ul>
+            <li>
+              <Link to={{ search: '?status=uncompleted' }} className="hover:text-blue-500">
+                Show not completed
+              </Link>
+            </li>
+            <li>
+              <Link to={{ search: '?status=completed' }} className="hover:text-blue-500">
+                Show completed
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <Outlet />
-    </div>
+    </Fragment>
+  );
+};
+
+const Todo: React.FC<{ item: TodoItem }> = ({ item }) => {
+  return (
+    <li
+      key={item.id}
+      className={cx('p-2 rounded hover:bg-gray-50 flex gap-2 items-center', {
+        'bg-white': item.status === 'uncompleted',
+        'bg-gray-100 text-gray-500': item.status === 'completed',
+      })}
+    >
+      <Form method="post" className="contents">
+        <input type="hidden" name="id" value={item.id} />
+        <button
+          type="submit"
+          name="action"
+          value="toggle"
+          aria-label={`Mark as ${item.status === 'completed' ? 'not completed' : 'completed'}`}
+          className={cx({
+            'hover:text-green-500': item.status === 'uncompleted',
+          })}
+        >
+          {item.status === 'completed' ? <CheckCircle size={16} /> : <Circle size={16} />}
+        </button>
+        <Link to={`./${item.id}`} className="flex-1">
+          {item.content}
+        </Link>
+        <button type="submit" name="action" value="delete" aria-label="Remove item" className="hover:text-red-500">
+          <XCircle size={16} />
+        </button>
+      </Form>
+    </li>
   );
 };
 
@@ -120,7 +152,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 const ActionInputSchema = z.discriminatedUnion('action', [
-  z.object({ action: z.literal('create'), content: z.string().min(1, 'Content must contain at least one character') }),
+  z.object({
+    action: z.literal('create'),
+    content: z.string().min(1, 'Your to-do must contain at least one character'),
+  }),
   z.object({ action: z.literal('toggle'), id: z.string() }),
   z.object({ action: z.literal('delete'), id: z.string() }),
 ]);
