@@ -1,4 +1,5 @@
 import { cx } from 'class-variance-authority';
+import { Fragment } from 'react';
 import { Form, Link, To } from 'react-router-dom';
 
 import { VStack } from './Stack';
@@ -53,8 +54,7 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
         background === 'dimmed' ? 'bg-gray-100 text-gray-500' : '',
       )}
     >
-      <Form method="post" className="contents" action={action}>
-        <input type="hidden" name="id" value={id} />
+      <OptionalForm enabled={left != null || right != null} id={id} action={action}>
         {left != null ? <ActionButton {...left} /> : null}
 
         {to != null ? (
@@ -66,8 +66,25 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
         )}
 
         {right != null ? <ActionButton {...right} /> : null}
-      </Form>
+      </OptionalForm>
     </li>
+  );
+};
+
+const OptionalForm: React.FC<{ enabled: boolean; action?: string; id: string; children: React.ReactNode }> = ({
+  enabled,
+  action,
+  id,
+  children,
+}) => {
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  if (!enabled) return <Fragment>{children}</Fragment>;
+
+  return (
+    <Form method="post" className="contents" action={action}>
+      <input type="hidden" name="id" value={id} />
+      {children}
+    </Form>
   );
 };
 
