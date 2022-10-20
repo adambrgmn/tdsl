@@ -5,7 +5,7 @@ export const Root: React.FC = () => {
     <div>
       <ul>
         <li>
-          <Link to="/todos">Todo</Link>
+          <Link to="/todo">Todo</Link>
         </li>
         <li>
           <Link to="/shopping">Shopping lists</Link>

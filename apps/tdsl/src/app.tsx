@@ -1,11 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Root } from './routes/root';
-import { Start } from './routes/start';
-import { Todo, loader as todoLoader, action as todoAction } from './routes/todo';
-import { ShoppingRoot } from './routes/shopping/root';
-import { ShoppingLists, loader as shoppingListsLoader, action as shoppingListsAction } from './routes/shopping/start';
-import { ShoppingList, loader as shoppingListLoader, action as shoppingListAction } from './routes/shopping/id';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
 import { ErrorPage } from './error-page';
+import { Root } from './routes/root';
+import { ShoppingList, action as shoppingListAction, loader as shoppingListLoader } from './routes/shopping/id';
+import { ShoppingLists, action as shoppingListsAction, loader as shoppingListsLoader } from './routes/shopping/list';
+import { Start } from './routes/start';
+import { TodoSingle, loader as todoSingleLoader } from './routes/todo/id';
+import { TodoList, action as todoListAction, loader as todoListLoader } from './routes/todo/list';
 
 const router = createBrowserRouter([
   {
@@ -19,20 +20,23 @@ const router = createBrowserRouter([
       },
       {
         path: '/todo',
-        element: <Todo />,
-        loader: todoLoader,
-        action: todoAction,
+        element: <TodoList />,
+        loader: todoListLoader,
+        action: todoListAction,
+        children: [
+          {
+            path: '/todo/:id',
+            element: <TodoSingle />,
+            loader: todoSingleLoader,
+          },
+        ],
       },
       {
         path: '/shopping',
-        element: <ShoppingRoot />,
+        element: <ShoppingLists />,
+        loader: shoppingListsLoader,
+        action: shoppingListsAction,
         children: [
-          {
-            path: '/shopping',
-            element: <ShoppingLists />,
-            loader: shoppingListsLoader,
-            action: shoppingListsAction,
-          },
           {
             path: '/shopping/:id',
             element: <ShoppingList />,
