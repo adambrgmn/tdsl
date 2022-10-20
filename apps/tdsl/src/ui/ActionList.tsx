@@ -1,4 +1,5 @@
 import { cx } from 'class-variance-authority';
+import { Fragment } from 'react';
 import { Form, Link, To } from 'react-router-dom';
 
 import { VStack } from './Stack';
@@ -53,37 +54,43 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
         background === 'dimmed' ? 'bg-gray-100 text-gray-500' : '',
       )}
     >
-      <Form method="post" className="contents" action={action}>
-        <input type="hidden" name="id" value={id} />
-        {left != null ? <ActionButton {...left} /> : null}
+      {left != null ? <ActionButton {...left} id={id} formAction={action} /> : null}
 
-        {to != null ? (
-          <Link to={to} className="flex-1">
-            {title}
-          </Link>
-        ) : (
-          <span className="flex-1">{title}</span>
-        )}
+      {to != null ? (
+        <Link to={to} className="flex-1">
+          {title}
+        </Link>
+      ) : (
+        <span className="flex-1">{title}</span>
+      )}
 
-        {right != null ? <ActionButton {...right} /> : null}
-      </Form>
+      {right != null ? <ActionButton {...right} id={id} formAction={action} /> : null}
     </li>
   );
 };
 
-const ActionButton: React.FC<Action> = ({ action, label, icon, kind }) => {
+const ActionButton: React.FC<Action & { id: string; formAction?: string }> = ({
+  id,
+  action,
+  formAction,
+  label,
+  icon,
+  kind,
+}) => {
   return (
-    <button
-      type="submit"
-      name="action"
-      value={action}
-      aria-label={label}
-      className={cx(
-        kind === 'success' ? 'hover:text-green-500' : '',
-        kind === 'destructive' ? 'hover:text-red-500' : '',
-      )}
-    >
-      {icon}
-    </button>
+    <Form method="post" className="contents" action={formAction}>
+      <input type="hidden" name="action" value={action} />
+      <input type="hidden" name="id" value={id} />
+      <button
+        type="submit"
+        aria-label={label}
+        className={cx(
+          kind === 'success' ? 'hover:text-green-500' : '',
+          kind === 'destructive' ? 'hover:text-red-500' : '',
+        )}
+      >
+        {icon}
+      </button>
+    </Form>
   );
 };

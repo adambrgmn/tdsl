@@ -55,5 +55,5 @@ export type BoxProps<Element extends BoxElement> = Omit<React.ComponentProps<Ele
 
 export function Box<Element extends BoxElement = 'div'>({ element, className, children, ...props }: BoxProps<Element>) {
   let Element = element ?? 'div';
-  <Element className={cx(className, box(props))}>{children}</Element>;
+  return <Element className={cx(className, box(props))}>{children}</Element>;
 }

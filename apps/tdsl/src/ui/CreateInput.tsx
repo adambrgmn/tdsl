@@ -39,7 +39,7 @@ export const CreateInput: React.FC<CreateInputProps> = ({
               </span>
             ) : null}
           </VStack>
-
+          <input type="hidden" name="action" value="create" />
           <input
             type="text"
             name={name}
@@ -53,7 +53,7 @@ export const CreateInput: React.FC<CreateInputProps> = ({
           />
         </VStack>
 
-        <button type="submit" name="action" value="create" aria-label={submitLabel} className="hover:text-blue-500">
+        <button type="submit" aria-label={submitLabel} className="hover:text-blue-500">
           <ListPlus />
         </button>
       </HStack>
