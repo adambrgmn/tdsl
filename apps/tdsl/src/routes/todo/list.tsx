@@ -15,6 +15,7 @@ import * as z from 'zod';
 
 import { todos } from '../../data/todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
+import { HStack, PageSection, VStack } from '../../ui';
 import { cx } from '../../utils';
 
 export const TodoList: React.FC = () => {
@@ -36,75 +37,78 @@ export const TodoList: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="p-4 flex flex-col gap-8 bg-gray-200 rounded-md">
-        <Form method="post">
-          <div className="flex bg-white items-stretch p-2 rounded">
-            <label className="flex flex-col flex-1">
-              <div className="text-xs tracking-wider flex gap-4">
-                <span className="text-gray-700">New todo</span>
-                {contentError != null ? (
-                  <span role="alert" className="text-red-500">
-                    {contentError.message}
-                  </span>
-                ) : null}
-              </div>
-              <input
-                key={items.length}
-                type="text"
-                name="content"
-                placeholder="What needs to be done?"
-                autoFocus
-                className="placeholder:text-gray-400"
-                aria-invalid={contentError != null}
-                aria-required
-              />
-            </label>
+      <PageSection element="div" level="secondary">
+        <VStack gap="8" flex="fill">
+          <Form method="post">
+            <HStack padding="2" background="white" items="stretch" rounded="normal">
+              <VStack element="label" flex="fill">
+                <VStack gap="4" text="xs" tracking="wider">
+                  <span className="text-gray-700">New todo</span>
+                  {contentError != null ? (
+                    <span role="alert" className="text-red-500">
+                      {contentError.message}
+                    </span>
+                  ) : null}
+                </VStack>
 
-            <button
-              type="submit"
-              name="action"
-              value="create"
-              aria-label="Create new to-do item"
-              className="hover:text-blue-500"
-            >
-              <ListPlus />
-            </button>
-          </div>
-        </Form>
+                <input
+                  key={items.length}
+                  type="text"
+                  name="content"
+                  placeholder="What needs to be done?"
+                  autoFocus
+                  className="placeholder:text-gray-400"
+                  aria-invalid={contentError != null}
+                  aria-required
+                />
+              </VStack>
 
-        <div className="flex flex-col gap-1 flex-1">
-          <h2 className="text-xs tracking-wider">To-do</h2>
-          <ul className="flex flex-col gap-2 items-stretch">
-            {uncompleted.map((item) => (
-              <Todo key={item.id} item={item} />
-            ))}
-            {completed.map((item) => (
-              <Todo key={item.id} item={item} />
-            ))}
-          </ul>
-        </div>
+              <button
+                type="submit"
+                name="action"
+                value="create"
+                aria-label="Create new to-do item"
+                className="hover:text-blue-500"
+              >
+                <ListPlus />
+              </button>
+            </HStack>
+          </Form>
 
-        <div className="p-2 bg-white rounded">
-          <p className="text-xs tracking-wider">Filters</p>
-          <ul className="flex gap-4 text-sm">
-            <li>
-              <Link to={{ search: '' }} className="hover:text-blue-500">
-                Show all
-              </Link>
-            </li>
-            <li>
-              <Link to={{ search: '?status=uncompleted' }} className="hover:text-blue-500">
-                Show not completed
-              </Link>
-            </li>
-            <li>
-              <Link to={{ search: '?status=completed' }} className="hover:text-blue-500">
-                Show completed
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+          <VStack gap="1" flex="fill">
+            <h2 className="text-xs tracking-wider">To-do</h2>
+            <VStack element="ul" gap="2" items="stretch">
+              {uncompleted.map((item) => (
+                <Todo key={item.id} item={item} />
+              ))}
+              {completed.map((item) => (
+                <Todo key={item.id} item={item} />
+              ))}
+            </VStack>
+          </VStack>
+
+          <VStack background="white" padding="2" rounded="normal">
+            <p className="text-xs tracking-wider">Filters</p>
+            <HStack element="ul" gap="4" text="sm">
+              <li>
+                <Link to={{ search: '' }} className="hover:text-blue-500">
+                  Show all
+                </Link>
+              </li>
+              <li>
+                <Link to={{ search: '?status=uncompleted' }} className="hover:text-blue-500">
+                  Show not completed
+                </Link>
+              </li>
+              <li>
+                <Link to={{ search: '?status=completed' }} className="hover:text-blue-500">
+                  Show completed
+                </Link>
+              </li>
+            </HStack>
+          </VStack>
+        </VStack>
+      </PageSection>
 
       <Outlet />
     </Fragment>

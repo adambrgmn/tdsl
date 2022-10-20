@@ -1,3 +1,4 @@
 {
-  "tailwindCSS.experimental.configFile": "./apps/tdsl/tailwind.config.js"
+  "tailwindCSS.experimental.configFile": "./apps/tdsl/tailwind.config.js",
+  "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]]
 }
