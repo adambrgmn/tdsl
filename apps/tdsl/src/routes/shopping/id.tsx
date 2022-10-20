@@ -1,9 +1,11 @@
 import { format } from 'date-fns';
+import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { ActionFunctionArgs, Form, LoaderFunctionArgs, json, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { shoppingLists } from '../../data/shopping-lists';
 import { ShoppingListItem, ShoppingListSchema } from '../../types';
+import { ActionList, ActionListItem, CreateInput, ItemHeader, PageSection, Spacer, VStack } from '../../ui';
 
 export const ShoppingList: React.FC = () => {
   let data = useLoaderData();
@@ -20,58 +22,42 @@ export const ShoppingList: React.FC = () => {
   }
 
   return (
-    <article>
-      <h1>{list.title}</h1>
+    <PageSection element="section" level="item">
+      <VStack gap="8">
+        <ItemHeader createdAt={list.createdAt} updatedAt={list.updatedAt}>
+          {list.title}
+        </ItemHeader>
 
-      <aside>
-        <p>Created: {format(new Date(list.createdAt), 'yyyy-MM-dd HH:mm')}</p>
-        <p>Updated: {format(new Date(list.updatedAt), 'yyyy-MM-dd HH:mm')}</p>
+        <ActionList title="Pick up">
+          {unpicked.map((item) => (
+            <ActionListItem
+              key={item.id}
+              id={item.id}
+              title={item.content}
+              left={{ action: 'toggle', label: 'Mark as picked', icon: <Circle size={16} />, kind: 'success' }}
+              right={{ action: 'delete', label: 'Remove item', icon: <XCircle size={16} />, kind: 'destructive' }}
+            />
+          ))}
+        </ActionList>
 
-        <Form method="post" action="..">
-          <input type="hidden" name="id" value={list.id} />
-          <button type="submit" name="action" value="delete">
-            Remove list
-          </button>
-        </Form>
-      </aside>
+        <ActionList title="Already picked">
+          {picked.map((item) => (
+            <ActionListItem
+              key={item.id}
+              id={item.id}
+              title={item.content}
+              left={{ action: 'toggle', label: 'Mark as not picked', icon: <CheckCircle size={16} /> }}
+              right={{ action: 'delete', label: 'Remove item', icon: <XCircle size={16} />, kind: 'destructive' }}
+            />
+          ))}
+        </ActionList>
+      </VStack>
 
-      <h2>Pick up</h2>
-      <ul>
-        {unpicked.map((item) => (
-          <li key={item.id}>
-            <Form method="post">
-              <input type="hidden" name="id" value={item.id} />
-              <button type="submit" name="action" value="toggle">
-                Mark as {item.status === 'picked' ? 'not picked' : 'picked'}
-              </button>
-              {item.content}
-              <button type="submit" name="action" value="delete">
-                Remove item
-              </button>
-            </Form>
-          </li>
-        ))}
-      </ul>
+      <Spacer />
 
-      <h2>Already picked</h2>
-      <ul>
-        {picked.map((item) => (
-          <li key={item.id}>
-            <Form method="post">
-              <input type="hidden" name="id" value={item.id} />
-              <button type="submit" name="action" value="toggle">
-                Mark as {item.status === 'picked' ? 'not picked' : 'picked'}
-              </button>
-              {item.content}
-              <button type="submit" name="action" value="delete">
-                Remove item
-              </button>
-            </Form>
-          </li>
-        ))}
-      </ul>
+      <CreateInput label="New item" name="content" placeholder="What you need today?" submitLabel="Append new item" />
 
-      <footer>
+      {/* <footer>
         <Form method="post">
           <div>
             <label>
@@ -83,8 +69,8 @@ export const ShoppingList: React.FC = () => {
             Add new item
           </button>
         </Form>
-      </footer>
-    </article>
+      </footer> */}
+    </PageSection>
   );
 };
 

@@ -5,7 +5,7 @@ import * as z from 'zod';
 
 import { todos } from '../../data/todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '../../types';
-import { ActionList, ActionListItem, CreateInput, HStack, PageSection, VStack } from '../../ui';
+import { ActionList, ActionListItem, CreateInput, HStack, PageSection, Spacer, VStack } from '../../ui';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();
@@ -57,6 +57,8 @@ export const TodoList: React.FC = () => {
               />
             ))}
           </ActionList>
+
+          <Spacer size="fill" />
 
           <VStack background="white" padding="2" rounded="normal">
             <p className="text-xs tracking-wider">Filters</p>

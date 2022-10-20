@@ -10,7 +10,7 @@ export type ActionListProps = {
 
 export const ActionList: React.FC<ActionListProps> = ({ title, children }) => {
   return (
-    <VStack gap="1" flex="fill">
+    <VStack gap="1">
       <h2 className="text-xs tracking-wider">{title}</h2>
       <VStack element="ul" gap="2" items="stretch">
         {children}
@@ -61,7 +61,7 @@ export const ActionListItem: React.FC<ActionListItemProps> = ({
             {title}
           </Link>
         ) : (
-          title
+          <span className="flex-1">{title}</span>
         )}
 
         {right != null ? <ActionButton {...right} /> : null}

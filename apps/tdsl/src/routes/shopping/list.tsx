@@ -1,44 +1,45 @@
+import { XCircle } from 'lucide-react';
 import { Fragment } from 'react';
-import { ActionFunctionArgs, Form, Link, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, Outlet, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { shoppingLists } from '../../data/shopping-lists';
 import { ShoppingListSchema } from '../../types';
+import { ActionList, ActionListItem, CreateInput, PageSection, VStack } from '../../ui';
 
 export const ShoppingLists: React.FC = () => {
   let data = useLoaderData();
-  let items = ShoppingListSchema.array().parse(data);
+  let lists = ShoppingListSchema.array().parse(data);
 
   return (
     <Fragment>
-      <div>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <Form method="post">
-                <Link to={`./${item.id}`}>{item.title}</Link>
-                <input type="hidden" name="id" value={item.id} />
-                <button type="submit" name="action" value="delete">
-                  Remove list
-                </button>
-              </Form>
-            </li>
-          ))}
-        </ul>
+      <PageSection element="div" level="secondary">
+        <VStack gap="8" flex="fill">
+          <CreateInput
+            label="New shopping list"
+            name="title"
+            placeholder="What should it be called?"
+            submitLabel="Create new shopping list"
+          />
 
-        <Form method="post">
-          <div>
-            <label>
-              <span>New list</span>
-              <input type="text" name="title" placeholder="What should it be called?" />
-            </label>
-          </div>
-
-          <button type="submit" name="action" value="create">
-            Create
-          </button>
-        </Form>
-      </div>
+          <ActionList title="Shopping lists">
+            {lists.map((list) => (
+              <ActionListItem
+                key={list.id}
+                id={list.id}
+                title={list.title}
+                to={`./${list.id}`}
+                right={{
+                  action: 'delete',
+                  label: 'Remove list',
+                  icon: <XCircle size={16} />,
+                  kind: 'destructive',
+                }}
+              />
+            ))}
+          </ActionList>
+        </VStack>
+      </PageSection>
 
       <Outlet />
     </Fragment>

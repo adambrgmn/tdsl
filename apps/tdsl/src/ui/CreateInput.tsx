@@ -29,7 +29,7 @@ export const CreateInput: React.FC<CreateInputProps> = ({
 
   return (
     <Form method="post" action={action} onSubmit={() => setValue('')}>
-      <HStack padding="2" background="white" items="stretch" rounded="normal">
+      <HStack padding="2" background="white" items="stretch" rounded="normal" gap="2">
         <VStack element="label" flex="fill">
           <VStack gap="4" text="xs" tracking="wider">
             <span className="text-gray-700">{label}</span>
