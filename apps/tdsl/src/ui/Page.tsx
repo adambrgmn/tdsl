@@ -10,6 +10,7 @@ const pageSection = cva(['p-4', 'rounded-md', 'flex', 'flex-col'], {
       primary: ['bg-gray-100'],
       secondary: ['bg-gray-200'],
       item: ['bg-gray-300'],
+      danger: ['bg-red-200'],
     },
   },
 });

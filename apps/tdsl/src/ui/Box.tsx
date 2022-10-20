@@ -3,6 +3,13 @@ import { VariantProps, cva, cx } from 'class-variance-authority';
 export const base = {
   items: {
     stretch: ['items-stretch'],
+    center: ['items-center'],
+  },
+  justify: {
+    center: ['justify-center'],
+  },
+  place: {
+    center: ['items-center', 'justify-center'],
   },
   padding: {
     '2': ['p-2'],

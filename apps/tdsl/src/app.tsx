@@ -17,16 +17,19 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Start />,
+        errorElement: <ErrorPage />,
       },
       {
         path: '/todo',
         element: <TodoList />,
+        errorElement: <ErrorPage />,
         loader: todoListLoader,
         action: todoListAction,
         children: [
           {
             path: '/todo/:id',
             element: <TodoSingle />,
+            errorElement: <ErrorPage />,
             loader: todoSingleLoader,
           },
         ],
@@ -34,12 +37,14 @@ const router = createBrowserRouter([
       {
         path: '/shopping',
         element: <ShoppingLists />,
+        errorElement: <ErrorPage />,
         loader: shoppingListsLoader,
         action: shoppingListsAction,
         children: [
           {
             path: '/shopping/:id',
             element: <ShoppingList />,
+            errorElement: <ErrorPage />,
             loader: shoppingListLoader,
             action: shoppingListAction,
           },

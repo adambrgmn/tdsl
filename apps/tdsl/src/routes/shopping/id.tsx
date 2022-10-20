@@ -1,6 +1,5 @@
-import { format } from 'date-fns';
 import { CheckCircle, Circle, XCircle } from 'lucide-react';
-import { ActionFunctionArgs, Form, LoaderFunctionArgs, json, useLoaderData } from 'react-router-dom';
+import { ActionFunctionArgs, LoaderFunctionArgs, json, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { shoppingLists } from '../../data/shopping-lists';
@@ -56,20 +55,6 @@ export const ShoppingList: React.FC = () => {
       <Spacer />
 
       <CreateInput label="New item" name="content" placeholder="What you need today?" submitLabel="Append new item" />
-
-      {/* <footer>
-        <Form method="post">
-          <div>
-            <label>
-              <span>New list item</span>
-              <input type="text" name="content" placeholder="What do you need?" />
-            </label>
-          </div>
-          <button type="submit" name="action" value="create">
-            Add new item
-          </button>
-        </Form>
-      </footer> */}
     </PageSection>
   );
 };
@@ -87,7 +72,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     if (error instanceof Response) throw error;
     if (error instanceof z.ZodError) throw new Response('No id provided', { status: 400 });
 
-    throw new Error('Something unexpected happened');
+    throw new Response('Something unexpected happened', { status: 500 });
   }
 }
 

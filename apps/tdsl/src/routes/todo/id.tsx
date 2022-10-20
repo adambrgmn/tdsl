@@ -47,14 +47,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
     return json(todo);
   } catch (error) {
-    if (error instanceof Response) {
-      throw error;
-    }
+    if (error instanceof Response) throw error;
+    if (error instanceof z.ZodError) throw new Response('No id provided', { status: 400 });
 
-    if (error instanceof z.ZodError) {
-      throw new Response('No id provided', { status: 400 });
-    }
-
-    throw new Error('Something unexpected happened');
+    throw new Response('Something unexpected happened', { status: 500 });
   }
 }

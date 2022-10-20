@@ -1,4 +1,7 @@
+import { ServerCrash } from 'lucide-react';
 import { useRouteError } from 'react-router-dom';
+
+import { PageSection, VStack } from './ui';
 
 export const ErrorPage: React.FC = () => {
   const error = useRouteError();
@@ -14,16 +17,35 @@ export const ErrorPage: React.FC = () => {
     message = 'Not really sure what happened';
   }
 
+  if (hasStatus(error)) {
+    switch (error.status) {
+      case 404:
+        message = 'The item you wanted could not be found.';
+        break;
+      default:
+        message = 'Something went wrong while fetching you data.';
+        break;
+    }
+  }
+
   return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{message}</i>
-      </p>
-    </div>
+    <PageSection element="section" level="danger">
+      <VStack gap="8" place="center" flex="fill">
+        <ServerCrash size={48} />
+        <VStack gap="1" place="center">
+          <h1 className="text-xl font-bold">Oops, something went wrong!</h1>
+          <p>
+            <i>{message}</i>
+          </p>
+        </VStack>
+      </VStack>
+    </PageSection>
   );
 };
+
+function hasStatus(error: unknown): error is { status: number } {
+  return typeof error === 'object' && error != null && 'status' in error;
+}
 
 function hasStatusText(error: unknown): error is { statusText: string } {
   return typeof error === 'object' && error != null && 'statusText' in error;
