@@ -21,7 +21,7 @@ export const TodoList: React.FC = () => {
     }
   }
 
-  let todos = completed.concat(uncompleted);
+  let todos = uncompleted.concat(completed);
 
   return (
     <Fragment>
