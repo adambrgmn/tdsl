@@ -18,7 +18,8 @@
     "paths": {
       "@tdsl/data-shopping-lists": ["libs/data-shopping-lists/src/index.ts"],
       "@tdsl/data-todos": ["libs/data-todos/src/index.ts"],
-      "@tdsl/types": ["libs/types/src/index.ts"]
+      "@tdsl/types": ["libs/types/src/index.ts"],
+      "@tdsl/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

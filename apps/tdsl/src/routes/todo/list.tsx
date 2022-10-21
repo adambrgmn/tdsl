@@ -1,10 +1,5 @@
 import { todos } from '@tdsl/data-todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '@tdsl/types';
-import { CheckCircle, Circle, XCircle } from 'lucide-react';
-import { Fragment } from 'react';
-import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
-import * as z from 'zod';
-
 import {
   ActionList,
   ActionListItem,
@@ -14,7 +9,11 @@ import {
   Spacer,
   SuspendedOutlet,
   VStack,
-} from '../../ui';
+} from '@tdsl/ui';
+import { CheckCircle, Circle, XCircle } from 'lucide-react';
+import { Fragment } from 'react';
+import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
+import * as z from 'zod';
 
 export const TodoList: React.FC = () => {
   let data = useLoaderData();

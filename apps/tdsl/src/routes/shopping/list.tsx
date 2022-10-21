@@ -1,11 +1,10 @@
 import { shoppingLists } from '@tdsl/data-shopping-lists';
 import { ShoppingListSchema } from '@tdsl/types';
+import { ActionList, ActionListItem, CreateInput, PageSection, SuspendedOutlet, VStack } from '@tdsl/ui';
 import { XCircle } from 'lucide-react';
 import { Fragment } from 'react';
 import { ActionFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
-
-import { ActionList, ActionListItem, CreateInput, PageSection, SuspendedOutlet, VStack } from '../../ui';
 
 export const ShoppingLists: React.FC = () => {
   let data = useLoaderData();

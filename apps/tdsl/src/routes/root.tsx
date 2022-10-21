@@ -1,8 +1,7 @@
+import { Page, PageSection, SuspendedOutlet, VStack } from '@tdsl/ui';
 import { cx } from 'class-variance-authority';
 import { ClipboardList, ListChecks } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
-
-import { Page, PageSection, SuspendedOutlet, VStack } from '../ui';
 
 export const Root: React.FC = () => {
   return (

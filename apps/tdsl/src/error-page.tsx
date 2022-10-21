@@ -1,7 +1,6 @@
+import { PageSection, VStack } from '@tdsl/ui';
 import { ServerCrash } from 'lucide-react';
 import { useRouteError } from 'react-router-dom';
-
-import { PageSection, VStack } from './ui';
 
 export const ErrorPage: React.FC = () => {
   const error = useRouteError();
