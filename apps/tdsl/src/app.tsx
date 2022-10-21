@@ -1,18 +1,10 @@
-import { lazy } from 'react';
+import { List as ShoppingListsList, Single as ShoppingListsSingle } from '@tdsl/section-shopping-lists';
+import { List as TodosList, Single as TodosSingle } from '@tdsl/section-todos';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { ErrorPage } from './error-page';
 import { Root } from './routes/root';
-import { action as shoppingListAction, loader as shoppingListLoader } from './routes/shopping/id';
-import { action as shoppingListsAction, loader as shoppingListsLoader } from './routes/shopping/list';
 import { Start } from './routes/start';
-import { loader as todoSingleLoader } from './routes/todo/id';
-import { action as todoListAction, loader as todoListLoader } from './routes/todo/list';
-
-const ShoppingList = lazy(() => import('./routes/shopping/id'));
-const ShoppingLists = lazy(() => import('./routes/shopping/list'));
-const TodoSingle = lazy(() => import('./routes/todo/id'));
-const TodoList = lazy(() => import('./routes/todo/list'));
 
 const router = createBrowserRouter([
   {
@@ -27,32 +19,32 @@ const router = createBrowserRouter([
       },
       {
         path: '/todo',
-        element: <TodoList />,
+        element: <TodosList.TodoList />,
         errorElement: <ErrorPage />,
-        loader: todoListLoader,
-        action: todoListAction,
+        loader: TodosList.loader,
+        action: TodosList.action,
         children: [
           {
             path: '/todo/:id',
-            element: <TodoSingle />,
+            element: <TodosSingle.TodoSingle />,
             errorElement: <ErrorPage />,
-            loader: todoSingleLoader,
+            loader: TodosSingle.loader,
           },
         ],
       },
       {
         path: '/shopping',
-        element: <ShoppingLists />,
+        element: <ShoppingListsList.ShoppingLists />,
         errorElement: <ErrorPage />,
-        loader: shoppingListsLoader,
-        action: shoppingListsAction,
+        loader: ShoppingListsList.loader,
+        action: ShoppingListsList.action,
         children: [
           {
             path: '/shopping/:id',
-            element: <ShoppingList />,
+            element: <ShoppingListsSingle.ShoppingList />,
             errorElement: <ErrorPage />,
-            loader: shoppingListLoader,
-            action: shoppingListAction,
+            loader: ShoppingListsSingle.loader,
+            action: ShoppingListsSingle.action,
           },
         ],
       },
