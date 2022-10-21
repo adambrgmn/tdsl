@@ -1,9 +1,9 @@
+import { shoppingLists } from '@tdsl/data-shopping-lists';
 import { ShoppingListItem, ShoppingListSchema } from '@tdsl/types';
 import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { ActionFunctionArgs, LoaderFunctionArgs, json, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
-import { shoppingLists } from '../../data/shopping-lists';
 import { ActionList, ActionListItem, CreateInput, ItemHeader, PageSection, Spacer, VStack } from '../../ui';
 
 export const ShoppingList: React.FC = () => {

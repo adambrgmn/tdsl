@@ -1,10 +1,10 @@
+import { todos } from '@tdsl/data-todos';
 import { TodoItem, TodoItemSchema, TodoStatusSchema } from '@tdsl/types';
 import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { Fragment } from 'react';
 import { ActionFunctionArgs, Link, LoaderFunctionArgs, json, redirect, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
-import { todos } from '../../data/todos';
 import {
   ActionList,
   ActionListItem,

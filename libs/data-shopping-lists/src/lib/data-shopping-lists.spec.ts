@@ -1,4 +1,4 @@
-import { shoppingLists } from './shopping-lists';
+import { shoppingLists } from './data-shopping-lists';
 
 jest.mock('nanoid', () => {
   let value = 0;

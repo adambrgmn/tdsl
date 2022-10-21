@@ -1,4 +1,4 @@
-import { todos } from './todos';
+import { todos } from './data-todos';
 
 jest.mock('nanoid', () => {
   let value = 0;
