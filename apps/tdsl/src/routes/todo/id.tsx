@@ -1,9 +1,9 @@
+import { TodoItemSchema } from '@tdsl/types';
 import { CheckCircle, Circle, XCircle } from 'lucide-react';
 import { LoaderFunctionArgs, json, useLoaderData } from 'react-router-dom';
 import * as z from 'zod';
 
 import { todos } from '../../data/todos';
-import { TodoItemSchema } from '../../types';
 import { ItemActionButton, ItemActions, ItemHeader, PageSection, Spacer, VStack } from '../../ui';
 
 export const TodoSingle: React.FC = () => {

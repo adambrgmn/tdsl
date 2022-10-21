@@ -1,6 +1,6 @@
+import { TodoItem, TodoItemSchema, TodoStatus } from '@tdsl/types';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
-import { TodoItem, TodoItemSchema, TodoStatus } from '../types';
 
 export const todoStore = localforage.createInstance({ name: 'tdsl-todos', version: 1.0 });
 

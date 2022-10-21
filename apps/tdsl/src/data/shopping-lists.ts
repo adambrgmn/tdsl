@@ -1,6 +1,6 @@
+import { ShoppingList, ShopplingListItemSchema as ShoppingListItemSchema, ShoppingListSchema } from '@tdsl/types';
 import localforage from 'localforage';
 import { nanoid } from 'nanoid';
-import { ShoppingList, ShoppingListSchema, ShopplingListItemSchema as ShoppingListItemSchema } from '../types';
 
 export const shoppingListStore = localforage.createInstance({ name: 'tdsl-shopping-lists', version: 1.0 });
 
